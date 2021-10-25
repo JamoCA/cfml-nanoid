@@ -1,5 +1,5 @@
 /**
- * Name: nanoid.cfc
+ * Name: nanoid.cfc https://github.com/JamoCA/cfml-nanoid
  * Author: James Moberg (james@sunstarmedia.com)
  * Purpose: CFML implementation of Nano ID, secure URL-friendly unique ID generator
  * Date: 10/24/2021
