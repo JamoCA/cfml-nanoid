@@ -29,7 +29,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 	];
 	variables.alphabet = variables.dictionary["default"];
 
-	public nanoid function init(string alphabet="", numeric size=0, string algorithm="SHA1PRNG") output=false {
+	public nanoid function init(string alphabet="", numeric size=0, string algorithm="SHA1PRNG") hint="sets initial settings" {
 		if (len(trim(arguments.alphabet))){
 			setAlphabet(arguments.alphabet);
 		}
@@ -42,27 +42,27 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return this;
 	}
 
-	public void function setAlphabet(string alphabet=""){
+	public void function setAlphabet(string alphabet="") hint="sets alphabet" {
 		variables.alphabet = initAlphabet(arguments.alphabet);
 	}
 
-	public void function setSize(numeric size=0){
+	public void function setSize(numeric size=0) hint="sets size" {
 		variables.size = initSize(arguments.size);
 	}
 
-	public void function setAlgorithm(string algorithm="SHA1PRNG"){
+	public void function setAlgorithm(string algorithm="SHA1PRNG") hint="sets algorithm" {
 		variables.algorithm = initAlgorithm(arguments.algorithm);
 	}
 
-	public array function getAlgorithms(){
+	public array function getAlgorithms() hint="returns algorithms as array" {
 		return variables.algorithms;
 	}
 
-	public struct function getDictionary(){
+	public struct function getDictionary() hint="returns dictionary as struct" {
 		return variables.dictionary;
 	}
 
-	private string function initAlphabet(string alphabet) output=true {
+	private string function initAlphabet(string alphabet) hint="validates alphabet" {
 		local.alphabet = variables.alphabet;
 		if (len(trim(arguments.alphabet))){
 			if (variables.dictionary.keyExists(arguments.alphabet)){
@@ -78,7 +78,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return local.alphabet;
 	}
 
-	private string function initAlgorithm(string algorithm){
+	private string function initAlgorithm(string algorithm) hint="validates algorithm" {
 		local.algorithm = variables.algorithm;
 		if (len(arguments.algorithm)){
 			if (not arrayFindNoCase(variables.algorithms, arguments.algorithm)){
@@ -89,7 +89,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return local.algorithm;
 	}
 
-	private numeric function initSize(numeric size=0){
+	private numeric function initSize(numeric size=0) hint="validates size" {
 		local.size = val(variables.size);
 		if (val(arguments.size) neq 0){
 			if (not isValid("integer", arguments.size) or val(arguments.size) lte 0){
@@ -100,7 +100,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return javacast("int", local.size);
 	}
 
-	public string function generate(string alphabet="", numeric size=0, string algorithm="") output=true hint="Returns a tiny, secure, URL-friendly, unique string ID" {
+	public string function generate(string alphabet="", numeric size=0, string algorithm="") output=false hint="Returns a tiny, secure, URL-friendly, unique string ID" {
 		local.alphabet = initAlphabet(arguments.alphabet);
 		local.alphabet = listToArray(local.alphabet, "");
 		local.alphabitSize = arrayLen(local.alphabet);
