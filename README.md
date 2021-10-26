@@ -70,6 +70,17 @@ nanoId.setAlgorithm("IBMSecureRandom");
 // no output
 ```
 
+## Algorithms
+
+Algorithm | Notes
+--- | ---
+SHA1PRNG | Initial seeding is currently done via a combination of system attributes and the java.security entropy gathering device
+IBMSecureRandom | This implementation uses a SHA-1 message digest and computes the hash over a true-random seed value.
+NativePRNG | (nextBytes() uses /dev/urandom, generateSeed() uses /dev/random)
+NativePRNGBlocking | (nextBytes() and generateSeed() use /dev/random)
+NativePRNGNonBlocking | (nextBytes() and generateSeed() use /dev/urandom)
+
+
 ## Alphabet Dictionary
 
 Code | Description | Characters
