@@ -5,6 +5,21 @@ numeric function getNano() hint="returns nano time (more accurate)" {
 	return createObject("java", "java.lang.System").nanoTime();
 }
 
+algorithms = nanoId.getAlgorithms();
+writeOutput("<h2>Benchmark</h2>");
+for (algorithm in algorithms){
+	t = getTickCount();
+	c = 0;
+	while (true){
+		c+=1;
+		ignore = nanoId.generate(type="secure");
+		if (getTickCount()-t gte 1000){
+			break;
+		}
+	}
+	writeoutput("<div><b>#algorithm#:</b> #numberFormat(c)# ops/sec</div>");
+}
+
 maxResults = 5;
 
 algorithms = nanoId.getAlgorithms();
