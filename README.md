@@ -4,7 +4,7 @@
 CFML implementation of [nanoid](https://github.com/ai/nanoid), secure URL-friendly unique ID generation.
 
 - A tiny, secure URL-friendly unique string ID generator for JavaScript
-- Safe. It uses CFML's RandRange("SHA1PRNG") to guarantee a proper distribution of symbols.
+- Safe. It uses `SHA1PRNG` (default), `IBMSecureRandom`, `NativePRNG`, `NativePRNGBlocking` or `NativePRNGNonBlocking` algorithms to assist in a proper distribution of symbols.
 - Compact. It uses more symbols than UUID (`A-Za-z0-9_-`) and has the same number of unique options in just 21 symbols instead of 36.
 
 ## Usage
