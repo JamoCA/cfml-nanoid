@@ -17,14 +17,14 @@ nanoId = new nanoId();
 
 ## nanoId.generate()
 
-Generates compact ID with 21 characters of the alphabet `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-`
+Generates compact ID using settings.  (Defaults to `21` characters of the alphabet `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-` using `SHA1PRNG` algorithm.)
 
 ```js
 writeOutput(nanoId.generate());
 // jLWi7TKamN1zqpE_Z00Ab
 ```
 
-## nanoId.generate(_alphabet_, _size_, _type_)
+## nanoId.generate(_alphabet_, _size_, _algorithm_)
 One-time override for a single ID generation
 ```js
 writeOutput(nanoId.generate(alphabet="ABCDEFGHJKLMNPQRSTUVXYZ"));
@@ -33,20 +33,22 @@ writeOutput(nanoId.generate(alphabet="ABCDEFGHJKLMNPQRSTUVXYZ"));
 writeOutput(nanoId.generate(size=12));
 // 2PBPRu7HRoJP
 
-writeOutput(nanoId.generate(type="secure"));
+writeOutput(nanoId.generate(algorithm="NativePRNG"));
 // fkDNYl2snoOXMegoFi_Dr
 
+// Using 2 ordered arguments
 writeOutput(nanoId.generate("ABCDEFGHIJKLMNOPQRSTUVXYZ", 12));
 // THTMYMVEGMAV
 
-writeOutput(nanoId.generate("ABCDEFGHIJKLMNOPQRSTUVXYZ", 12, "secure"));
+// Using 3 ordered arguments
+writeOutput(nanoId.generate("ABCDEFGHIJKLMNOPQRSTUVXYZ", 12, "IBMSecureRandom"));
 // RMQFYHVJIMEZ
 
 ```
 
 ## nanoId.setAlphabet(_alphabet_)
 
-Sets a custom characters for all subsequent ID generations. A dictionary name can also be used.
+Sets a custom characters for all subsequent ID generations. A dictionary name can also be used. (Defaults to `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-`.)
 ```js
 nanoId.setAlphabet("ABCDEFGHJKLMNPQSTUVWXYZ");
 // no output
@@ -60,11 +62,11 @@ nanoId.setSize(12);
 // no output
 ```
 
-## nanoId.setType(_type_);
+## nanoId.setAlgorithm(_algorithm_);
 
-Sets `secure` or `non-secure` generation type.  (Defaults to `non-secure`.)
+Sets `secure` or `non-secure` generation type.  (Defaults to `SHA1PRNG`. Options are `SHA1PRNG`, `IBMSecureRandom`, `NativePRNG`, `NativePRNGBlocking`, `NativePRNGNonBlocking`.)
 ```js
-nanoId.setType("secure");
+nanoId.setAlgorithm("IBMSecureRandom");
 // no output
 ```
 
@@ -84,4 +86,4 @@ nolookalikesSafe | Same as `noolookalikes` but with removed vowels & following l
 
 ## To Review
 
-Test to determine if using Java native `java.security.SecureRandom` provides any benefit.
+Research to determine if Java native `java.security.SecureRandom` is sufficient and whether there are any [hardware random generator](https://github.com/ai/nanoid/issues/311#issuecomment-951434986) options available.
