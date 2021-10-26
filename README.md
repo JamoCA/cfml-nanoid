@@ -95,6 +95,18 @@ alphanumeric | Combination of all the lowercase, uppercase characters & numbers 
 nolookalikes | Numbers & english alphabet without lookalikes: `1`, `l`, `I`, `0`, `O`, `o`, `u`, `v`, `5`, `S`, `s`, `2`, `Z`. | 346789ABCDEFGHJKLMNPQRTUVWXYabcdefghijkmnpqrtwxyz
 nolookalikesSafe | Same as `noolookalikes` but with removed vowels & following letters: `3`, `4`, `x`, `X`, `V`. This list should protect you from accidentally getting obscene words in generated strings. | 6789BCDFGHJKLMNPQRTWbcdfghjkmnpqrtwz
 
+## Benchmark
+
+Algorithm | Speed
+--- | ---
+SHA1PRNG | 8,832 ops/sec
+IBMSecureRandom | 13,411 ops/sec
+NativePRNG | 12,383 ops/sec
+NativePRNGBlocking | 12,942 ops/sec
+NativePRNGNonBlocking | 12,822 ops/sec
+
+Test Configuration: ColdFusion Developer 2016.0.17.325979 / Windows Server 2016 / Java 11.0.11+9-LTS-194
+
 ## To Review
 
 Research to determine if Java native `java.security.SecureRandom` is sufficient and whether there are any [hardware random generator](https://github.com/ai/nanoid/issues/311#issuecomment-951434986) options available.
