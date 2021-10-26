@@ -37,7 +37,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 	}
 
 	public void function setAlphabet(string alphabet=""){
-		variables.dictionary = initAlphabet(arguments.alphabet);
+		variables.alphabet = initAlphabet(arguments.alphabet);
 	}
 
 	public void function setSize(numeric size=0){
@@ -48,7 +48,15 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		variables.algorithm = initAlgorithm(arguments.algorithm);
 	}
 
-	private string function initAlphabet(string alphabet){
+	public array function getAlgorithms(){
+		return variables.algorithms;
+	}
+
+	public struct function getDictionary(){
+		return variables.dictionary;
+	}
+
+	private string function initAlphabet(string alphabet) output=true {
 		local.alphabet = variables.alphabet;
 		if (len(trim(arguments.alphabet))){
 			if (variables.dictionary.keyExists(arguments.alphabet)){
@@ -73,27 +81,30 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return local.algorithm;
 	}
 
-	private numeric function initSize(string size){
+	private numeric function initSize(numeric size=0){
 		local.size = val(variables.size);
 		if (val(arguments.size) neq 0){
 			if (not isValid("integer", arguments.size) or val(arguments.size) lte 0){
 				throw(message = "size must be a postive integer.");
 			}
-			local.size = val(variables.size);
+			local.size = val(arguments.size);
 		}
 		return javacast("int", local.size);
 	}
 
 	public string function generate(string alphabet="", numeric size=0, string algorithm="") output=true hint="Returns a tiny, secure, URL-friendly, unique string ID" {
-		local.alphabet = listToArray(initAlphabet(arguments.alphabet), "");
+		local.alphabet = javacast("string", initAlphabet(arguments.alphabet)).replaceAll(",", "");
+		local.alphabet = listToArray(local.alphabet, "");
 		local.alphabitSize = arrayLen(local.alphabet);
 		local.size = initSize(arguments.size);
 		local.algorithm = initAlgorithm(arguments.algorithm);
 		local.result = [];
 		arrayResize(local.result, local.size);
+		//writeDump(local.alphabet);
 		for (local.i=1; local.i lte local.size; local.i=local.i+1){
 			arrayAppend(local.result, local.alphabet[randRange(1, local.alphabitSize, local.algorithm)]);
 		}
 		return arrayToList(local.result,"");
 	}
+
 }
