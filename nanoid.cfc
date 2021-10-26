@@ -1,6 +1,6 @@
 /**
  * Name: nanoid.cfc https://github.com/JamoCA/cfml-nanoid
- * Author: James Moberg / SunStar Media https://www.sunstarmedia.com/
+ * Author: James Moberg (james@sunstarmedia.com)
  * Purpose: CFML implementation of Nano ID, secure URL-friendly unique ID generator
  * Date: 10/24/2021 Initial function
  * 10/26/2021 Added dictionary, support for different algorithms and alphabet sanitization.
@@ -70,6 +70,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 			}
 			local.alphabet = javacast("string", arguments.alphabet).replaceAll("[^0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz\-]","");
 			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(local.alphabet, "")), ",", true);
+			local.alphabet = local.alphabet.replaceAll(",","");
 			if (listLen(local.alphabet) lt 1 or listLen(local.alphabet) gt 255){
 				throw(message = "alphabet must contain between 1 and 255 unique symbols.");
 			}
@@ -100,7 +101,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 	}
 
 	public string function generate(string alphabet="", numeric size=0, string algorithm="") output=true hint="Returns a tiny, secure, URL-friendly, unique string ID" {
-		local.alphabet = javacast("string", initAlphabet(arguments.alphabet)).replaceAll(",", "");
+		local.alphabet = initAlphabet(arguments.alphabet);
 		local.alphabet = listToArray(local.alphabet, "");
 		local.alphabitSize = arrayLen(local.alphabet);
 		local.size = initSize(arguments.size);
