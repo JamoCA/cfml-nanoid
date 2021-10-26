@@ -37,18 +37,16 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 	}
 
 	public string function generate(string alphabet="", numeric size=0) output=false hint="Returns a tiny, secure, URL-friendly, unique string ID" {
+		local.alphabetArray = variables.alphabetArray;
+		local.size = variables.size;
 		if (len(trim(arguments.alphabet))){
 			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(arguments.alphabet, "")), ",", true);
 			if (listLen(local.alphabet) lt 1 or listLen(local.alphabet) gt 255){
 				throw(message = "alphabet must contain between 1 and 255 unique symbols.");
 			}
 			local.alphabetArray = listToArray(local.alphabet);
-		} else {
-			local.alphabetArray = variables.alphabetArray;
 		}
-		if (val(arguments.size) eq 0){
-			local.size = variables.size;
-		} else {
+		if (val(arguments.size) neq 0){
 			if (not isValid("integer", arguments.size) or val(arguments.size) lte 0){
 				throw(message = "size must be a postive integer.");
 			}
