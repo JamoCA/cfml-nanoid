@@ -100,7 +100,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 		return javacast("int", local.size);
 	}
 
-	public string function generate(string alphabet="", numeric size=0, string algorithm="") output=false hint="Returns a tiny, secure, URL-friendly, unique string ID" {
+	public string function generate(string alphabet="", numeric size=0, string algorithm="") hint="Returns a tiny, secure, URL-friendly, unique string ID" {
 		local.alphabet = initAlphabet(arguments.alphabet);
 		local.alphabet = listToArray(local.alphabet, "");
 		local.alphabitSize = arrayLen(local.alphabet);
