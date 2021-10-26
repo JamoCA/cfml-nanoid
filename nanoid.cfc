@@ -1,10 +1,16 @@
 /**
  * Name: nanoid.cfc https://github.com/JamoCA/cfml-nanoid
- * Author: James Moberg (james@sunstarmedia.com)
+ * Author: James Moberg / SunStar Media https://www.sunstarmedia.com/
  * Purpose: CFML implementation of Nano ID, secure URL-friendly unique ID generator
  * Date: 10/24/2021 Initial function
- * 10/26/2021 Added dictionary and support for different algorithms.
- */
+ * 10/26/2021 Added dictionary, support for different algorithms and alphabet sanitization.
+	ALGORITHM NOTES
+	- SHA1PRNG (Initial seeding is currently done via a combination of system attributes and the java.security entropy gathering device)
+	- IBMSecureRandom: This implementation uses a SHA-1 message digest and computes the hash over a true-random seed value.
+	- NativePRNG (nextBytes() uses /dev/urandom, generateSeed() uses /dev/random)
+	- NativePRNGBlocking (nextBytes() and generateSeed() use /dev/random)
+	- NativePRNGNonBlocking (nextBytes() and generateSeed() use /dev/urandom)
+*/
 component accessors="true" singleton displayname="CF_NanoID" output="false" hint="CFML implementation of Nano ID, secure URL-friendly unique ID generator" {
 
 	variables.size = 21;
@@ -62,7 +68,8 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 			if (variables.dictionary.keyExists(arguments.alphabet)){
 				arguments.alphabet = variables.dictionary[arguments.alphabet];
 			}
-			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(arguments.alphabet, "")), ",", true);
+			local.alphabet = javacast("string", arguments.alphabet).replaceAll("[^0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz\-]","");
+			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(local.alphabet, "")), ",", true);
 			if (listLen(local.alphabet) lt 1 or listLen(local.alphabet) gt 255){
 				throw(message = "alphabet must contain between 1 and 255 unique symbols.");
 			}
