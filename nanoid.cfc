@@ -69,7 +69,7 @@ component accessors="true" singleton displayname="CF_NanoID" output="false" hint
 				arguments.alphabet = variables.dictionary[arguments.alphabet];
 			}
 			local.alphabet = javacast("string", arguments.alphabet).replaceAll("[^0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz\-]","");
-			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(local.alphabet, "")), ",", true);
+			local.alphabet = listRemoveDuplicates(arrayToList(listToArray(local.alphabet, "")), ",", false);
 			local.alphabet = local.alphabet.replaceAll(",","");
 			if (listLen(local.alphabet) lt 1 or listLen(local.alphabet) gt 255){
 				throw(message = "alphabet must contain between 1 and 255 unique symbols.");
